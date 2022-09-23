@@ -6,14 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestSoftek
+namespace SoftekTest.TestUI.Test.Scripts
 {
     [TestFixture]
-    public partial class TestUI
+    public class UiTest
     {
-        IWebDriver driver;
+        internal IWebDriver driver;
 
-        const string checkoutForm = "https://qaautomation-test.s3-eu-west-1.amazonaws.com/index.html";
+        internal const string checkoutFormUri = "https://qaautomation-test.s3-eu-west-1.amazonaws.com/index.html";
 
         [SetUp]
         public void StartBrowser()

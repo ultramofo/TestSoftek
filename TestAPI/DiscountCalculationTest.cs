@@ -7,9 +7,10 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestSoftek
+namespace SoftekTest
 {
-    public partial class TestAPI
+    [Parallelizable(ParallelScope.All)]
+    public class DiscountTest : ApiTest
     {
         [Test]
         public async Task TestDiscountCalculation()
@@ -18,7 +19,7 @@ namespace TestSoftek
             var promoCode = "myPromoCode";
 
             int targetDiscount = promoCode.Length;
-            string url = $"{api}/coupon?coupon={promoCode}";
+            string url = $"{apiUri}/coupon?coupon={promoCode}";
 
             var client = new HttpClient();
 

@@ -6,13 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestSoftek
+namespace SoftekTest
 {
-    [TestFixture]
-    [Parallelizable(ParallelScope.All)]
-    public partial class TestAPI
+    [TestFixture]    
+    public class ApiTest
     {
-        const string api = "https://fg1ap986e9.execute-api.eu-west-1.amazonaws.com/Dev";
+        internal const string apiUri = "https://fg1ap986e9.execute-api.eu-west-1.amazonaws.com/Dev";
 
         [SetUp]
         public void SetUp()

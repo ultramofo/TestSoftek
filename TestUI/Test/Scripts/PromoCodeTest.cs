@@ -2,17 +2,21 @@ using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
+using SoftekTest.TestUI.Src.Pages;
 using System.Diagnostics;
 using System.Globalization;
 using static System.Net.WebRequestMethods;
 
-namespace TestSoftek
+namespace SoftekTest.TestUI.Test.Scripts
 {
-    public partial class TestUI
+    [Parallelizable(ParallelScope.All)]
+    public class PromoCodeTest : UiTest
     {
         [Test]
-        public void TestPromoCode()
+        public void DiscountTest()
         {
+            CheckoutForm checkoutForm = new CheckoutForm(driver);
+
             var promoCode = "myPromoCode";
             float discount = (float)(100 - promoCode.Length) / 100;
 
@@ -22,17 +26,14 @@ namespace TestSoftek
 
             try
             {
-                driver.Url = checkoutForm;
-                var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
-                IWebElement totalPrice = wait.Until(driver => driver.FindElement(By.XPath("//*[@id='totalAmount' and text() != '']")));
-                float price = float.Parse(totalPrice.Text, CultureInfo.InvariantCulture.NumberFormat);
-                float newPrice = price * discount;
-                IWebElement promoInput = driver.FindElement(By.XPath("//input[@id='promoCode']"));
-                promoInput.SendKeys(promoCode);
-                IWebElement redeemButton = driver.FindElement(By.XPath("//button[contains(text(), 'Redeem')]"));
-                redeemButton.Click();
+                driver.Url = checkoutFormUri;
+                
+                float price = float.Parse(checkoutForm.totalPrice.Text, CultureInfo.InvariantCulture.NumberFormat);
+                float newPrice = price * discount;             
+                checkoutForm.promoInput.SendKeys(promoCode);            
+                checkoutForm.redeemButton.Click();
                 Thread.Sleep(500); // waiting for price field refresh
-                price = float.Parse(totalPrice.Text, CultureInfo.InvariantCulture.NumberFormat);
+                price = float.Parse(checkoutForm.totalPrice.Text, CultureInfo.InvariantCulture.NumberFormat);
                 if (price == newPrice)
                 {
                     promoCodeWorking = true;

@@ -1,32 +1,39 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using SoftekTest.TestUI.Src.Pages;
 using static System.Net.WebRequestMethods;
 
-namespace TestSoftek
+namespace SoftekTest.TestUI.Test.Scripts
 {
-    public partial class TestUI
+    [Parallelizable(ParallelScope.All)]
+    public class CheckoutFormTest : UiTest
     {
         [Test]
         public void TestMandatoryFields()
         {
+            CheckoutForm checkoutForm = new CheckoutForm(driver);
+
             bool firstNameDisplayed = false;
             bool lastNameDisplayed = false;
             bool nameOnCardDisplayed = false;
             bool creditCardNumberDisplayed = false;
             bool expirationDisplayed = false;
             bool cvvDisplayed = false;
+
             TestContext.WriteLine("Checking error descriptions of mandatory fields..");
+
             try
             {
-                driver.Url = checkoutForm;
-                IWebElement element = driver.FindElement(By.XPath("//button[contains(text(), 'Continue to checkout')]"));
-                element.Click();
-                if (driver.FindElement(By.XPath("//label[contains(text(), 'First name')]/../div[@class='invalid-feedback']")).Displayed) firstNameDisplayed = true;
-                if (driver.FindElement(By.XPath("//label[contains(text(), 'Last name')]/../div[@class='invalid-feedback']")).Displayed) lastNameDisplayed = true;
-                if (driver.FindElement(By.XPath("//label[contains(text(), 'Name on card')]/../div[@class='invalid-feedback']")).Displayed) nameOnCardDisplayed = true;
-                if (driver.FindElement(By.XPath("//label[contains(text(), 'Credit card number')]/../div[@class='invalid-feedback']")).Displayed) creditCardNumberDisplayed = true;
-                if (driver.FindElement(By.XPath("//label[contains(text(), 'Expiration')]/../div[@class='invalid-feedback']")).Displayed) expirationDisplayed = true;
-                if (driver.FindElement(By.XPath("//label[contains(text(), 'CVV')]/../div[@class='invalid-feedback']")).Displayed) cvvDisplayed = true;
+                driver.Url = checkoutFormUri;
+
+                checkoutForm.CheckoutButton.Click();
+
+                if (checkoutForm.FirstNameError.Displayed) firstNameDisplayed = true;
+                if (checkoutForm.LastNameError.Displayed) lastNameDisplayed = true;
+                if (checkoutForm.NameOnCardError.Displayed) nameOnCardDisplayed = true;
+                if (checkoutForm.CreditCardNumberError.Displayed) creditCardNumberDisplayed = true;
+                if (checkoutForm.ExpirationError.Displayed) expirationDisplayed = true;
+                if (checkoutForm.CvvError.Displayed) cvvDisplayed = true;
             }
             catch (Exception e)
             {
